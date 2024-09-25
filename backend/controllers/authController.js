@@ -105,6 +105,18 @@ class AuthController {
       return res.status(500).send(failure("Internal server error", error));
     }
   }
+
+  async imageUpload(req, res) {
+    try {
+      res.json({
+        imageUrl: req.file.path,
+        publicId: req.file.filename,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(failure("Internal server error", error));
+    }
+  }
 }
 
-module.exports = new AuthController()
+module.exports = new AuthController();
