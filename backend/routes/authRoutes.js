@@ -13,6 +13,6 @@ routes.post(
   AuthController.signup
 );
 routes.post("/login", AuthController.login);
-routes.post('/upload', upload.single('image'), AuthController.imageUpload);
+routes.post('/upload/:userId', upload.single('image'), AuthController.imageUpload);
 
 module.exports = routes;

@@ -108,10 +108,28 @@ class AuthController {
 
   async imageUpload(req, res) {
     try {
-      res.json({
-        imageUrl: req.file.path,
-        publicId: req.file.filename,
-      });
+      const userId = req.params.userId; // Assuming the user ID is attached to req.user (from JWT or session)
+
+      // Update the user with the image URL and public ID
+      const updatedUser = await userModel.findByIdAndUpdate(
+        userId,
+        {
+          imageUrl: req.file.path, // Path of the image
+          publicId: req.file.filename, // Public ID (if needed)
+        },
+        { new: true } // Return the updated document
+      );
+
+      if (!updatedUser) {
+        return res.status(404).send(failure("User not found"));
+      }
+
+      res.status(200).json(
+        success("Image uploaded successfully", {
+          imageUrl: updatedUser.imageUrl,
+          publicId: updatedUser.publicId,
+        })
+      );
     } catch (error) {
       console.log(error);
       return res.status(500).send(failure("Internal server error", error));

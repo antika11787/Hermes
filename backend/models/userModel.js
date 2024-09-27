@@ -12,10 +12,14 @@ const userModel = mongoose.Schema(
       required: true,
       unique: true,
     },
-    image: {
+    imageUrl: {
       type: String,
       default:
         "https://beforeigosolutions.com/wp-content/uploads/2021/12/dummy-profile-pic-300x300-1.png",
+    },
+    publicId: {
+      type: String,
+      default: null,
     },
   },
   {
