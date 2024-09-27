@@ -1,4 +1,3 @@
-import React from "react";
 import { Controller } from "react-hook-form";
 
 const Form = ({
@@ -9,6 +8,7 @@ const Form = ({
   control,
   rules,
   placeholder,
+  onChange,
 }) => {
   return (
     <div>
@@ -22,7 +22,8 @@ const Form = ({
             type={type}
             id={name}
             placeholder={placeholder}
-            {...field}
+            {...(type === "file" ? {} : field)}
+            onChange={type === "file" ? onChange : field.onChange}
           />
         )}
       />

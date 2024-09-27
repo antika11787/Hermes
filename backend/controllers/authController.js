@@ -108,16 +108,15 @@ class AuthController {
 
   async imageUpload(req, res) {
     try {
-      const userId = req.params.userId; // Assuming the user ID is attached to req.user (from JWT or session)
+      const userId = req.params.userId;
 
-      // Update the user with the image URL and public ID
       const updatedUser = await userModel.findByIdAndUpdate(
         userId,
         {
-          imageUrl: req.file.path, // Path of the image
-          publicId: req.file.filename, // Public ID (if needed)
+          imageUrl: req.file.path,
+          publicId: req.file.filename,
         },
-        { new: true } // Return the updated document
+        { new: true }
       );
 
       if (!updatedUser) {

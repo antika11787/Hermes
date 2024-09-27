@@ -1,6 +1,17 @@
-import React from "react";
 import Button from "../Atoms/Button";
-const Header = ({ showLogin, showSignup }) => {
+import { saveLoginPageState } from "../../redux/slices/commonDataSlice";
+import { useDispatch } from "react-redux";
+
+const Header = () => {
+  const dispatch = useDispatch();
+  const showLogin = () => {
+    dispatch(saveLoginPageState({ isLogin: true }));
+  };
+
+  const showSignup = () => {
+    dispatch(saveLoginPageState({ isLogin: false }));
+  };
+
   return (
     <div>
       <Button value="Login" type="button" onClick={showLogin} />

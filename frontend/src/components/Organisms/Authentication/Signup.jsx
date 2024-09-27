@@ -2,8 +2,14 @@ import Form from "../../Molecules/Form";
 import { useForm } from "react-hook-form";
 import Button from "../../Atoms/Button";
 import { SignupApi } from "../../../apiEndpoints/auth";
+import { useNavigate } from "react-router-dom";
+import Header from "../../Layout/Header";
+import { saveLoginPageState } from "../../../redux/slices/commonDataSlice";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     control,
@@ -24,15 +30,19 @@ const Signup = () => {
   const onSubmit = async (data) => {
     try {
       const response = await SignupApi(data);
-      console.log(response);
+      if (response) {
+        dispatch(saveLoginPageState({ isLogin: true }));
+        navigate("/");
+      }
     } catch (error) {
       console.log("Error:", error);
     }
   };
   return (
     <div>
+      <Header />
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Form
+        <Form
           label="Username"
           type="text"
           name="username"
@@ -43,7 +53,7 @@ const Signup = () => {
           }}
           errors={errors}
         />
-      <Form
+        <Form
           label="Email"
           type="email"
           name="email"
@@ -82,10 +92,8 @@ const Signup = () => {
           placeholder="Confirm password"
           rules={{
             required: "Please confirm your password",
-            validate: (value) =>
-              value === password || "Passwords do not match",
+            validate: (value) => value === password || "Passwords do not match",
           }}
-          
           errors={errors}
         />
 

@@ -4,9 +4,12 @@ import Button from "../../Atoms/Button";
 import { LoginApi } from "../../../apiEndpoints/auth";
 import { useDispatch } from "react-redux";
 import { saveLogin } from "../../../redux/slices/userSlice";
+import Header from "../../Layout/Header";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     control,
@@ -22,14 +25,17 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const response = await LoginApi(data);
-      dispatch(saveLogin(response));
-      console.log(response);
+      const { email, userID, token } = response;
+
+      dispatch(saveLogin({ email, userID, token }));
+      navigate("/chats");
     } catch (error) {
       console.log("Error:", error);
     }
   };
   return (
     <div>
+      <Header />
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Form
           label="Email"
