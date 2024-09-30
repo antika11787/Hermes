@@ -69,6 +69,9 @@ const Login = () => {
           }}
           errors={errors}
         />
+        <div>
+          Don&apos;t have an account?<Button value="Sign Up"></Button>
+        </div>
 
         <Button type="submit" value="Login"></Button>
       </form>

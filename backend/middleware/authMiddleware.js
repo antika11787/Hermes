@@ -1,5 +1,6 @@
 const { handleJSONTokenError } = require("../utils/errorHandler");
 const { failure } = require("../utils/successError");
+const jwt = require("jsonwebtoken");
 
 const isUserLoggedIn = (req, res, next) => {
   try {
@@ -16,8 +17,7 @@ const isUserLoggedIn = (req, res, next) => {
       return res.status(400).send(failure("Authorization failed!"));
     }
 
-    const customRequest = req;
-    customRequest.user = decoded;
+    req.user = decoded;
     next();
   } catch (error) {
     console.log("error found", error);

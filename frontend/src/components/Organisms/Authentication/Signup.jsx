@@ -96,6 +96,9 @@ const Signup = () => {
           }}
           errors={errors}
         />
+        <div>
+          Already have an account?<Button value="Login"></Button>
+        </div>
 
         <Button type="submit" value="Sign Up"></Button>
       </form>

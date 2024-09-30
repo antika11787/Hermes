@@ -1,9 +1,8 @@
-// const express = require("express");
-// const { registerUser, authUser } = require("../controllers/userController");
+const express = require("express");
+const routes = express();
+const UserController = require("../controllers/userController");
+const { isUserLoggedIn } = require("../middleware/authMiddleware");
 
-// const routes = express();
+routes.get("/all", isUserLoggedIn, UserController.allUsers);
 
-// routes.post("/signup", registerUser);
-// routes.post("/login", authUser);
-
-// module.exports = routes;
+module.exports = routes;

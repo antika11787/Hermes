@@ -1,57 +1,59 @@
-// const asyncHandler = require("express-async-handler");
-// const userModel = require("../models/userModel");
-// const generateToken = require("../config/generateToken");
+const userModel = require("../models/userModel");
+const { success, failure } = require("../utils/successError");
 
-// const registerUser = asyncHandler(async (req, res) => {
-//   const { username, email, password } = req.body;
-//   if (!username || !email || !password) {
-//     res.status(400);
-//     throw new Error("Please add all fields");
-//   }
+class UserController {
+  //   async createValidation(req, res, next) {
+  //     try {
+  //       const validation = validationResult(req).array();
+  //       if (validation.length > 0) {
+  //         return res
+  //           .status(400)
+  //           .send({ message: "Validation error", validation });
+  //       }
+  //       next();
+  //     } catch (error) {
+  //       console.log("Error has occurred", error);
+  //       return res.status(500).send(failure("Internal server error", error));
+  //     }
+  //   }
 
-//   const userExists = await userModel.findOne({ email, username });
-//   if (userExists) {
-//     res.status(400);
-//     throw new Error("User already exists");
-//   }
+  async allUsers(req, res) {
+    try {
+      const keyword = req.query.search
+        ? {
+            $or: [
+              { name: { $regex: new RegExp(req.query.search, "i") } },
+              { email: { $regex: new RegExp(req.query.search, "i") } },
+            ],
+          }
+        : {};
+      const users = await userModel.find({
+        ...keyword,
+        _id: { $ne: req.user._id },
+      });
 
-//   const user = await userModel.create({
-//     username,
-//     email,
-//     password,
-//     // image
-//   });
-//   if (user) {
-//     res.status(201).json({
-//       _id: user.id,
-//       username: user.username,
-//       email: user.email,
-//       // image: user.image,
-//       token: generateToken(user._id),
-//     });
-//   } else {
-//     res.status(400);
-//     throw new Error("Failed to create the user");
-//   }
-// });
+      if (!users || users.length === 0) {
+        return res.status(404).send(failure("Users not found"));
+      }
 
-// const authUser = asyncHandler(async (req, res) => {
-//   const { email, password } = req.body;
+      const responseUser = users.map((user) => {
+        return {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        };
+      });
 
-//   const user = await userModel.findOne({ email });
+      return res
+        .status(200)
+        .send(success("Users fetched successfully", responseUser));
+    } catch (error) {
+      console.log("Error has occurred", error);
+      return res.status(500).send(failure("Internal server error", error));
+    }
+  }
+}
 
-//   if (user && (await user.matchPassword(password))) {
-//     res.status(200).json({
-//       _id: user.id,
-//       email: user.email,
-//     });
-//   } else {
-//     res.status(400);
-//     throw new Error("Invalid credentials");
-//   }
-// });
-
-// module.exports = {
-//   registerUser,
-//   authUser,
-// };
+module.exports = new UserController();
