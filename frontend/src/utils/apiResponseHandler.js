@@ -13,6 +13,18 @@ const handleApiResponse = (response) => {
   }
 };
 
+const handleApiResponseWithoutToast = (response) => {
+  const data = response.data;
+
+  console.log("API response:", data.data);
+  if (data.success === true) {
+    return data.data;
+  } else {
+    toast.error(data.message);
+    throw new Error(data.message);
+  }
+};
+
 const handleApiError = (error) => {
   console.error("API error:", error);
   if (error.response && error.response.data) {
@@ -34,4 +46,4 @@ const handleApiError = (error) => {
   }
 };
 
-export { handleApiResponse, handleApiError };
+export { handleApiResponse, handleApiError, handleApiResponseWithoutToast };

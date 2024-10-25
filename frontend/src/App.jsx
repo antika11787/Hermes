@@ -10,7 +10,6 @@ import { Navigate } from "react-router-dom";
 function App() {
   const { isLogin } = useSelector((state) => state.commonData);
   const { token } = useSelector((state) => state.user);
-  console.log("lo", isLogin);
   return (
     <div className="App">
       <Routes>

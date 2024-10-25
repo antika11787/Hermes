@@ -25,9 +25,9 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const response = await LoginApi(data);
-      const { email, userID, token } = response;
+      const { email, userID, imageUrl, token } = response;
 
-      dispatch(saveLogin({ email, userID, token }));
+      dispatch(saveLogin({ email, userID, imageUrl, token }));
       navigate("/chats");
     } catch (error) {
       console.log("Error:", error);

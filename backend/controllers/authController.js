@@ -105,35 +105,6 @@ class AuthController {
       return res.status(500).send(failure("Internal server error", error));
     }
   }
-
-  async imageUpload(req, res) {
-    try {
-      const userId = req.params.userId;
-
-      const updatedUser = await userModel.findByIdAndUpdate(
-        userId,
-        {
-          imageUrl: req.file.path,
-          publicId: req.file.filename,
-        },
-        { new: true }
-      );
-
-      if (!updatedUser) {
-        return res.status(404).send(failure("User not found"));
-      }
-
-      res.status(200).json(
-        success("Image uploaded successfully", {
-          imageUrl: updatedUser.imageUrl,
-          publicId: updatedUser.publicId,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-      return res.status(500).send(failure("Internal server error", error));
-    }
-  }
 }
 
 module.exports = new AuthController();

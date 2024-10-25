@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import Form from "../components/Molecules/Form";
 import Button from "../components/Atoms/Button";
-import { ImageUploadApi } from "../apiEndpoints/auth";
+import { ImageUploadApi } from "../apiEndpoints/user";
+import { ProfileApi } from "../apiEndpoints/user";
+import { ProfilePicApi } from "../apiEndpoints/user";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { removeLogin } from "../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +28,7 @@ const ProfilePage = () => {
 
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [profile, setProfile] = useState(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -38,7 +41,6 @@ const ProfilePage = () => {
 
       const response = await ImageUploadApi(formData, userID);
       setImageUrl(response.imageUrl);
-      console.log(response);
     } catch (error) {
       console.log("Error:", error);
     }
@@ -48,6 +50,24 @@ const ProfilePage = () => {
     dispatch(removeLogin());
     navigate("/");
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await ProfileApi();
+      setProfile(response);
+    };
+
+    fetchProfile();
+  }, []);
+
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      const response = await ProfilePicApi();
+      setImageUrl(response?.imageUrl);
+    };
+
+    fetchProfilePic();
+  }, []);
 
   return (
     <div>
@@ -63,8 +83,13 @@ const ProfilePage = () => {
         />
         <Button type="submit" value="Upload"></Button>
       </form>
-      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
+
       <Button value="Logout" onClick={logout}></Button>
+
+      <h1>Profile Page</h1>
+      <p>Name: {profile?.username}</p>
+      <p>Email: {profile?.email}</p>
+      {imageUrl && <img src={imageUrl} alt="Uploaded" />}
     </div>
   );
 };
