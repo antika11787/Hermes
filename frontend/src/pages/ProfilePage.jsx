@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import Form from "../components/Molecules/Form";
-import Button from "../components/Atoms/Button";
+import Form from "../components/molecules/form";
+import Button from "../components/atoms/button";
 import { ImageUploadApi } from "../apiEndpoints/user";
 import { ProfileApi } from "../apiEndpoints/user";
 import { ProfilePicApi } from "../apiEndpoints/user";

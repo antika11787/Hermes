@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import ChatPage from "./pages/ChatPage";
-import Login from "./components/Organisms/Authentication/Login";
+import Login from "./components/organisms/login";
 import { useSelector } from "react-redux";
-import Signup from "./components/Organisms/Authentication/Signup";
+import Signup from "./components/organisms/signup";
 import ProfilePage from "./pages/ProfilePage";
 import { Navigate } from "react-router-dom";
 

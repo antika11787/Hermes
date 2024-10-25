@@ -1,5 +1,5 @@
-import Button from "../Atoms/Button";
-import { saveLoginPageState } from "../../redux/slices/commonDataSlice";
+import Button from "../../atoms/button";
+import { saveLoginPageState } from "../../../redux/slices/commonDataSlice";
 import { useDispatch } from "react-redux";
 
 const Header = () => {

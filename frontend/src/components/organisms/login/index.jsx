@@ -1,39 +1,34 @@
-import Form from "../../Molecules/Form";
 import { useForm } from "react-hook-form";
-import Button from "../../Atoms/Button";
-import { SignupApi } from "../../../apiEndpoints/auth";
-import { useNavigate } from "react-router-dom";
-import Header from "../../Layout/Header";
-import { saveLoginPageState } from "../../../redux/slices/commonDataSlice";
+import Form from "../../molecules/form";
+import Button from "../../atoms/button";
+import { LoginApi } from "../../../apiEndpoints/auth";
 import { useDispatch } from "react-redux";
+import { saveLogin } from "../../../redux/slices/userSlice";
+import Header from "../../molecules/header";
+import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
-  const navigate = useNavigate();
+const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     control,
-    watch,
     formState: { errors },
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
-      username: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  const password = watch("password");
-
   const onSubmit = async (data) => {
     try {
-      const response = await SignupApi(data);
-      if (response) {
-        dispatch(saveLoginPageState({ isLogin: true }));
-        navigate("/");
-      }
+      const response = await LoginApi(data);
+      const { email, userID, imageUrl, token } = response;
+
+      dispatch(saveLogin({ email, userID, imageUrl, token }));
+      navigate("/chats");
     } catch (error) {
       console.log("Error:", error);
     }
@@ -42,17 +37,6 @@ const Signup = () => {
     <div>
       <Header />
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Form
-          label="Username"
-          type="text"
-          name="username"
-          control={control}
-          placeholder="Enter your username"
-          rules={{
-            required: "Username is required",
-          }}
-          errors={errors}
-        />
         <Form
           label="Email"
           type="email"
@@ -69,6 +53,7 @@ const Signup = () => {
           errors={errors}
         />
         <Form
+          isPassword={true}
           label="Password"
           type="password"
           name="password"
@@ -84,26 +69,14 @@ const Signup = () => {
           }}
           errors={errors}
         />
-        <Form
-          label="Confirm Password"
-          type="password"
-          name="confirmPassword"
-          control={control}
-          placeholder="Confirm password"
-          rules={{
-            required: "Please confirm your password",
-            validate: (value) => value === password || "Passwords do not match",
-          }}
-          errors={errors}
-        />
         <div>
-          Already have an account?<Button value="Login"></Button>
+          Don&apos;t have an account?<Button value="Sign Up"></Button>
         </div>
 
-        <Button type="submit" value="Sign Up"></Button>
+        <Button type="submit" value="Login"></Button>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
