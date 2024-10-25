@@ -20,7 +20,6 @@ const handleApiResponseWithoutToast = (response) => {
   if (data.success === true) {
     return data.data;
   } else {
-    toast.error(data.message);
     throw new Error(data.message);
   }
 };
@@ -33,14 +32,14 @@ const handleApiError = (error) => {
 
     if (errorData.validation && errorData.validation.length > 0) {
       const firstError = errorData.validation[0].msg;
-      toast.error(firstError);
+      console.log("Error:", firstError);
     } else if (errorData.message) {
-      toast.error(errorData.message);
+      console.log("Error:", errorData.message);
     } else {
-      toast.error("An unknown error occurred during the request");
+      console.log("An unknown error occurred during the request");
     }
   } else {
-    toast.error(
+    console.log(
       error.message || "An unknown error occurred during the request"
     );
   }

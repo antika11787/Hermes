@@ -74,6 +74,7 @@ class ChatController {
       if (!chats || chats.length === 0) {
         return res.status(400).send(failure("Chats not found", chats));
       }
+
       return res.status(200).send(success("Chats found", chats));
     } catch (error) {
       console.error("Error has occurred", error);
@@ -117,7 +118,23 @@ class ChatController {
         return res.status(400).send(failure("Group chat not created"));
       }
 
-      return res.status(200).send(success("Group chat created", groupChat));
+      const message = await messageModel.create({
+        sender: req.user.userID,
+        content: `${req.user.username} created the group chat`,
+        chat: groupChat._id,
+      });
+
+      const updatedGroupChat = await chatModel
+        .findByIdAndUpdate(
+          groupChat._id,
+          { latestMessage: message._id },
+          { new: true }
+        )
+        .populate("latestMessage", "content");
+
+      return res
+        .status(200)
+        .send(success("Group chat created", updatedGroupChat));
     } catch (error) {
       console.error("Error has occurred", error);
       return res.status(500).send(failure("Internal server error", error));
@@ -304,7 +321,7 @@ class ChatController {
         group.chatName = chatName;
         await group.save();
       }
-  
+
       return res.status(200).send(success("Group name changed", group));
     } catch (error) {
       console.error("Error has occurred", error);
