@@ -48,7 +48,7 @@ const ProfilePage = () => {
 
   const logout = () => {
     dispatch(removeLogin());
-    navigate("/");
+    navigate("/login");
   };
 
   useEffect(() => {

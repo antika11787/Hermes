@@ -1,26 +1,26 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import ChatPage from "./pages/ChatPage";
-import Login from "./components/organisms/login";
 import { useSelector } from "react-redux";
-import Signup from "./components/organisms/signup";
 import ProfilePage from "./pages/ProfilePage";
 import { Navigate } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import "./App.css";
 
 function App() {
-  const { isLogin } = useSelector((state) => state.commonData);
   const { token } = useSelector((state) => state.user);
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={isLogin ? <Login /> : <Signup />} exact />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route
           path="/profile"
-          element={token ? <ProfilePage /> : <Navigate to="/" replace />}
+          element={token ? <ProfilePage /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/chats"
-          element={token ? <ChatPage /> : <Navigate to="/" replace />}
+          element={token ? <ChatPage /> : <Navigate to="/login" replace />}
         />
       </Routes>
     </div>

@@ -1,21 +1,27 @@
 import Button from "../../atoms/button";
-import { saveLoginPageState } from "../../../redux/slices/commonDataSlice";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import "./index.scss";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const showLogin = () => {
-    dispatch(saveLoginPageState({ isLogin: true }));
-  };
-
-  const showSignup = () => {
-    dispatch(saveLoginPageState({ isLogin: false }));
-  };
+  const navigate = useNavigate();
 
   return (
-    <div>
-      <Button value="Login" type="button" onClick={showLogin} />
-      <Button value="Sign Up" type="button" onClick={showSignup} />
+    <div className="m-header">
+      <Button
+        value="Login"
+        type="button"
+        onClick={() => {
+          navigate("/login");
+        }}
+      />
+      <Button
+        value="Sign Up"
+        type="button"
+        onClick={() => {
+          navigate("/signup");
+        }}
+      />
     </div>
   );
 };

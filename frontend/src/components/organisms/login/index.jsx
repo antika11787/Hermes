@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { saveLogin } from "../../../redux/slices/userSlice";
 import Header from "../../molecules/header";
 import { useNavigate } from "react-router-dom";
+import "./index.scss";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -34,47 +35,54 @@ const Login = () => {
     }
   };
   return (
-    <div>
+    <div className="o-login">
       <Header />
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Form
-          label="Email"
-          type="email"
-          name="email"
-          control={control}
-          placeholder="Enter your email"
-          rules={{
-            required: "Email is required",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "Invalid email address",
-            },
-          }}
-          errors={errors}
-        />
-        <Form
-          isPassword={true}
-          label="Password"
-          type="password"
-          name="password"
-          control={control}
-          placeholder="Enter your password"
-          rules={{
-            required: "Password is required",
-            pattern: {
-              value: /^(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{6,}$/,
-              message:
-                "Password must be at least 6 characters, contain at least one special characters and one number",
-            },
-          }}
-          errors={errors}
-        />
-        <div>
-          Don&apos;t have an account?<Button value="Sign Up"></Button>
-        </div>
+      <div className="o-login__form-container">
+        <form
+          className="o-login__form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
+          <Form
+            label="Email"
+            type="email"
+            name="email"
+            control={control}
+            placeholder="Enter your email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address",
+              },
+            }}
+            errors={errors}
+          />
+          <Form
+            isPassword={true}
+            label="Password"
+            type="password"
+            name="password"
+            control={control}
+            placeholder="Enter your password"
+            rules={{
+              required: "Password is required",
+              pattern: {
+                value: /^(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{6,}$/,
+                message:
+                  "Password must be at least 6 characters, contain at least one special characters and one number",
+              },
+            }}
+            errors={errors}
+          />
+          <div className="o-login__link">
+            <p>Don&apos;t have an account?</p>
+            <p>Sign up</p>
+          </div>
 
-        <Button type="submit" value="Login"></Button>
-      </form>
+          <Button type="submit" value="Login"></Button>
+        </form>
+      </div>
     </div>
   );
 };

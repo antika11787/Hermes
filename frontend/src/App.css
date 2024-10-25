@@ -3,7 +3,5 @@
 .App {
   min-height: 100vh;
   display: flex;
-  /* background-image: url('../public/images/background.png');
-    background-size: cover;
-    background-position: center; */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
